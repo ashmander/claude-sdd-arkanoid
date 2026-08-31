@@ -108,6 +108,57 @@ function updateBall() {
   }
 }
 
+const SCORE_PER_BLOCK = 10;
+let score = 0;
+
+const explosions = [];
+
+function spawnExplosion( block ) {
+  explosions.push( {
+    x: block.x,
+    y: block.y,
+    color: block.color,
+    startTime: Date.now(),
+  } );
+}
+
+function updateExplosions() {
+  const now = Date.now();
+  for ( let i = explosions.length - 1; i >= 0; i-- ) {
+    if ( now - explosions[ i ].startTime >= EXPLOSION_DURATION ) {
+      explosions.splice( i, 1 );
+    }
+  }
+}
+
+function checkBlockCollisions() {
+  for ( let i = 0; i < blocks.length; i++ ) {
+    const block = blocks[ i ];
+
+    const overlaps =
+      ball.x < block.x + block.w &&
+      ball.x + ball.w > block.x &&
+      ball.y < block.y + block.h &&
+      ball.y + ball.h > block.y;
+
+    if ( !overlaps ) continue;
+
+    const overlapX = Math.min( ball.x + ball.w, block.x + block.w ) - Math.max( ball.x, block.x );
+    const overlapY = Math.min( ball.y + ball.h, block.y + block.h ) - Math.max( ball.y, block.y );
+
+    if ( overlapX < overlapY ) {
+      ball.vx = -ball.vx;
+    } else {
+      ball.vy = -ball.vy;
+    }
+
+    blocks.splice( i, 1 );
+    score += SCORE_PER_BLOCK;
+    spawnExplosion( block );
+    break;
+  }
+}
+
 const blocks = [];
 for ( let row = 0; row < BLOCK_ROWS; row++ ) {
   for ( let col = 0; col < BLOCK_COLS; col++ ) {
@@ -130,11 +181,25 @@ function draw() {
 
   drawSprite( ctx, 'paddle', paddle.x, paddle.y, paddle.w, paddle.h );
   drawSprite( ctx, 'ball', ball.x, ball.y, ball.w, ball.h );
+
+  const now = Date.now();
+  for ( const explosion of explosions ) {
+    const elapsed = now - explosion.startTime;
+    const frames = EXPLOSION_FRAMES[ explosion.color ];
+    const frameIndex = Math.min( frames.length - 1, Math.floor( ( elapsed / EXPLOSION_DURATION ) * frames.length ) );
+    drawFrame( ctx, frames[ frameIndex ], explosion.x, explosion.y, BLOCK_W, BLOCK_H );
+  }
+
+  ctx.fillStyle = '#fff';
+  ctx.font = '16px sans-serif';
+  ctx.fillText( `Score: ${ score }`, 10, 20 );
 }
 
 function loop() {
   updatePaddle();
   updateBall();
+  checkBlockCollisions();
+  updateExplosions();
   draw();
   requestAnimationFrame( loop );
 }
