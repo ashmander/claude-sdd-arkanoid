@@ -16,12 +16,17 @@ const PADDLE_Y = 600;
 
 const BALL_SIZE = 16;
 
+const LIVES_START = 3;
+
 const paddle = {
   x: ( canvas.width - PADDLE_W ) / 2,
   y: PADDLE_Y,
   w: PADDLE_W,
   h: PADDLE_H,
 };
+
+let gameState = 'playing';
+let lives = LIVES_START;
 
 const bounceSound = new Audio( 'assets/sounds/ball-bounce.mp3' );
 const breakSound = new Audio( 'assets/sounds/break-sound.mp3' );
@@ -116,7 +121,12 @@ function updateBall() {
   }
 
   if ( ball.y > canvas.height ) {
-    resetBall();
+    lives -= 1;
+    if ( lives <= 0 ) {
+      gameState = 'gameover';
+    } else {
+      resetBall();
+    }
   }
 }
 
@@ -168,22 +178,48 @@ function checkBlockCollisions() {
     score += SCORE_PER_BLOCK;
     spawnExplosion( block );
     playSound( breakSound );
+
+    if ( blocks.length === 0 ) {
+      gameState = 'victory';
+    }
+
     break;
   }
 }
 
-const blocks = [];
-for ( let row = 0; row < BLOCK_ROWS; row++ ) {
-  for ( let col = 0; col < BLOCK_COLS; col++ ) {
-    blocks.push( {
-      x: BLOCK_LEFT + col * BLOCK_W,
-      y: BLOCK_TOP + row * BLOCK_H,
-      w: BLOCK_W,
-      h: BLOCK_H,
-      color: BLOCK_COLOR_ORDER[ row % BLOCK_COLOR_ORDER.length ],
-    } );
+function createBlocks() {
+  const created = [];
+  for ( let row = 0; row < BLOCK_ROWS; row++ ) {
+    for ( let col = 0; col < BLOCK_COLS; col++ ) {
+      created.push( {
+        x: BLOCK_LEFT + col * BLOCK_W,
+        y: BLOCK_TOP + row * BLOCK_H,
+        w: BLOCK_W,
+        h: BLOCK_H,
+        color: BLOCK_COLOR_ORDER[ row % BLOCK_COLOR_ORDER.length ],
+      } );
+    }
   }
+  return created;
 }
+
+let blocks = createBlocks();
+
+function resetGame() {
+  score = 0;
+  lives = LIVES_START;
+  blocks = createBlocks();
+  explosions.length = 0;
+  paddle.x = ( canvas.width - paddle.w ) / 2;
+  resetBall();
+  gameState = 'playing';
+}
+
+window.addEventListener( 'keydown', ( e ) => {
+  if ( ( e.key === 'r' || e.key === 'R' ) && ( gameState === 'gameover' || gameState === 'victory' ) ) {
+    resetGame();
+  }
+} );
 
 function draw() {
   ctx.clearRect( 0, 0, canvas.width, canvas.height );
@@ -206,12 +242,33 @@ function draw() {
   ctx.fillStyle = '#fff';
   ctx.font = '16px sans-serif';
   ctx.fillText( `Score: ${ score }`, 10, 20 );
+  ctx.fillText( `Lives: ${ lives }`, canvas.width - 90, 20 );
+
+  if ( gameState === 'gameover' || gameState === 'victory' ) {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+    ctx.fillRect( 0, 0, canvas.width, canvas.height );
+
+    ctx.fillStyle = '#fff';
+    ctx.textAlign = 'center';
+    ctx.font = '32px sans-serif';
+    ctx.fillText(
+      gameState === 'gameover' ? 'GAME OVER' : 'VICTORY',
+      canvas.width / 2,
+      canvas.height / 2
+    );
+
+    ctx.font = '16px sans-serif';
+    ctx.fillText( 'Presiona R para reiniciar', canvas.width / 2, canvas.height / 2 + 30 );
+    ctx.textAlign = 'left';
+  }
 }
 
 function loop() {
-  updatePaddle();
-  updateBall();
-  checkBlockCollisions();
+  if ( gameState === 'playing' ) {
+    updatePaddle();
+    updateBall();
+    checkBlockCollisions();
+  }
   updateExplosions();
   draw();
   requestAnimationFrame( loop );
