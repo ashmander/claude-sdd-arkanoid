@@ -23,6 +23,14 @@ const paddle = {
   h: PADDLE_H,
 };
 
+const bounceSound = new Audio( 'assets/sounds/ball-bounce.mp3' );
+const breakSound = new Audio( 'assets/sounds/break-sound.mp3' );
+
+function playSound( sound ) {
+  sound.currentTime = 0;
+  sound.play();
+}
+
 const BALL_SPEED = 5;
 const BALL_MAX_BOUNCE_ANGLE = ( 60 * Math.PI ) / 180;
 
@@ -74,14 +82,17 @@ function updateBall() {
   if ( ball.x <= 0 ) {
     ball.x = 0;
     ball.vx = -ball.vx;
+    playSound( bounceSound );
   } else if ( ball.x + ball.w >= canvas.width ) {
     ball.x = canvas.width - ball.w;
     ball.vx = -ball.vx;
+    playSound( bounceSound );
   }
 
   if ( ball.y <= 0 ) {
     ball.y = 0;
     ball.vy = -ball.vy;
+    playSound( bounceSound );
   }
 
   const hitsPaddle =
@@ -101,6 +112,7 @@ function updateBall() {
     ball.y = paddle.y - ball.h;
     ball.vx = BALL_SPEED * Math.sin( angle );
     ball.vy = -BALL_SPEED * Math.cos( angle );
+    playSound( bounceSound );
   }
 
   if ( ball.y > canvas.height ) {
@@ -155,6 +167,7 @@ function checkBlockCollisions() {
     blocks.splice( i, 1 );
     score += SCORE_PER_BLOCK;
     spawnExplosion( block );
+    playSound( breakSound );
     break;
   }
 }
