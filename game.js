@@ -23,12 +23,24 @@ const paddle = {
   h: PADDLE_H,
 };
 
+const BALL_SPEED = 5;
+const BALL_MAX_BOUNCE_ANGLE = ( 60 * Math.PI ) / 180;
+
 const ball = {
   x: canvas.width / 2 - BALL_SIZE / 2,
   y: paddle.y - BALL_SIZE,
   w: BALL_SIZE,
   h: BALL_SIZE,
+  vx: BALL_SPEED * Math.sin( 0.4 ),
+  vy: -BALL_SPEED * Math.cos( 0.4 ),
 };
+
+function resetBall() {
+  ball.x = paddle.x + paddle.w / 2 - ball.w / 2;
+  ball.y = paddle.y - ball.h;
+  ball.vx = BALL_SPEED * Math.sin( 0.4 );
+  ball.vy = -BALL_SPEED * Math.cos( 0.4 );
+}
 
 const PADDLE_SPEED = 6;
 
@@ -53,6 +65,47 @@ function updatePaddle() {
 
   if ( paddle.x < 0 ) paddle.x = 0;
   if ( paddle.x + paddle.w > canvas.width ) paddle.x = canvas.width - paddle.w;
+}
+
+function updateBall() {
+  ball.x += ball.vx;
+  ball.y += ball.vy;
+
+  if ( ball.x <= 0 ) {
+    ball.x = 0;
+    ball.vx = -ball.vx;
+  } else if ( ball.x + ball.w >= canvas.width ) {
+    ball.x = canvas.width - ball.w;
+    ball.vx = -ball.vx;
+  }
+
+  if ( ball.y <= 0 ) {
+    ball.y = 0;
+    ball.vy = -ball.vy;
+  }
+
+  const hitsPaddle =
+    ball.vy > 0 &&
+    ball.y + ball.h >= paddle.y &&
+    ball.y + ball.h <= paddle.y + paddle.h &&
+    ball.x + ball.w >= paddle.x &&
+    ball.x <= paddle.x + paddle.w;
+
+  if ( hitsPaddle ) {
+    const ballCenterX = ball.x + ball.w / 2;
+    const paddleCenterX = paddle.x + paddle.w / 2;
+    const hitPos = ( ballCenterX - paddleCenterX ) / ( paddle.w / 2 );
+    const clampedHitPos = Math.max( -1, Math.min( 1, hitPos ) );
+    const angle = clampedHitPos * BALL_MAX_BOUNCE_ANGLE;
+
+    ball.y = paddle.y - ball.h;
+    ball.vx = BALL_SPEED * Math.sin( angle );
+    ball.vy = -BALL_SPEED * Math.cos( angle );
+  }
+
+  if ( ball.y > canvas.height ) {
+    resetBall();
+  }
 }
 
 const blocks = [];
@@ -81,6 +134,7 @@ function draw() {
 
 function loop() {
   updatePaddle();
+  updateBall();
   draw();
   requestAnimationFrame( loop );
 }
