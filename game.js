@@ -25,7 +25,7 @@ const paddle = {
   h: PADDLE_H,
 };
 
-let gameState = 'playing';
+let gameState = 'start';
 let lives = LIVES_START;
 
 const bounceSound = new Audio( 'assets/sounds/ball-bounce.mp3' );
@@ -212,12 +212,26 @@ function resetGame() {
   explosions.length = 0;
   paddle.x = ( canvas.width - paddle.w ) / 2;
   resetBall();
-  gameState = 'playing';
+  gameState = 'start';
 }
 
 window.addEventListener( 'keydown', ( e ) => {
   if ( ( e.key === 'r' || e.key === 'R' ) && ( gameState === 'gameover' || gameState === 'victory' ) ) {
     resetGame();
+    return;
+  }
+
+  if ( gameState === 'start' && e.key === ' ' ) {
+    gameState = 'playing';
+    return;
+  }
+
+  if ( e.key === 'p' || e.key === 'P' || e.key === ' ' ) {
+    if ( gameState === 'playing' ) {
+      gameState = 'paused';
+    } else if ( gameState === 'paused' ) {
+      gameState = 'playing';
+    }
   }
 } );
 
@@ -259,6 +273,34 @@ function draw() {
 
     ctx.font = '16px sans-serif';
     ctx.fillText( 'Presiona R para reiniciar', canvas.width / 2, canvas.height / 2 + 30 );
+    ctx.textAlign = 'left';
+  }
+
+  if ( gameState === 'start' ) {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+    ctx.fillRect( 0, 0, canvas.width, canvas.height );
+
+    ctx.fillStyle = '#fff';
+    ctx.textAlign = 'center';
+    ctx.font = '24px sans-serif';
+    ctx.fillText( 'ARKANOID', canvas.width / 2, canvas.height / 2 - 20 );
+
+    ctx.font = '16px sans-serif';
+    ctx.fillText( 'Presiona ESPACIO para comenzar', canvas.width / 2, canvas.height / 2 + 10 );
+    ctx.textAlign = 'left';
+  }
+
+  if ( gameState === 'paused' ) {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+    ctx.fillRect( 0, 0, canvas.width, canvas.height );
+
+    ctx.fillStyle = '#fff';
+    ctx.textAlign = 'center';
+    ctx.font = '32px sans-serif';
+    ctx.fillText( 'PAUSA', canvas.width / 2, canvas.height / 2 );
+
+    ctx.font = '16px sans-serif';
+    ctx.fillText( 'Presiona P o ESPACIO para continuar', canvas.width / 2, canvas.height / 2 + 30 );
     ctx.textAlign = 'left';
   }
 }
