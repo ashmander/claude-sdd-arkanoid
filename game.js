@@ -8,7 +8,7 @@ const BLOCK_LEFT = 0;
 
 const BLOCK_COLOR_ORDER = [ 'red', 'yellow', 'green', 'cyan', 'magenta', 'hotpink', 'gray' ];
 
-const PADDLE_W = 162;
+const PADDLE_W = 97;
 const PADDLE_H = 14;
 const PADDLE_Y = 600;
 
@@ -26,6 +26,11 @@ const paddle = {
 let gameState = 'start';
 let lives = LIVES_START;
 let currentLevelIndex = 0;
+
+let heartImg = new Image();
+let heartImgLoaded = false;
+heartImg.onload = () => { heartImgLoaded = true; };
+heartImg.src = 'assets/count-lives.png';
 
 const bounceSound = new Audio( 'assets/sounds/ball-bounce.mp3' );
 const breakSound = new Audio( 'assets/sounds/break-sound.mp3' );
@@ -333,7 +338,14 @@ function draw() {
   ctx.fillStyle = '#fff';
   ctx.font = '16px sans-serif';
   ctx.fillText( `Score: ${ score }`, 10, 20 );
-  ctx.fillText( `Lives: ${ lives }`, canvas.width - 90, 20 );
+  if ( heartImgLoaded ) {
+    const heartSize = 18;
+    const heartGap = 4;
+    for ( let i = 0; i < lives; i++ ) {
+      const heartX = canvas.width - 10 - ( heartSize + heartGap ) * ( i + 1 );
+      ctx.drawImage( heartImg, heartX, 4, heartSize, heartSize );
+    }
+  }
   ctx.textAlign = 'center';
   ctx.fillText( `Nivel ${ currentLevelIndex + 1 } / ${ levels.length }`, canvas.width / 2, 20 );
   ctx.textAlign = 'left';
