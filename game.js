@@ -40,8 +40,15 @@ function playSound( sound ) {
   sound.play();
 }
 
-const BALL_SPEED = 5;
+const BASE_BALL_SPEED = 6;
+const BALL_SPEED_GROWTH = 1.15;
 const BALL_MAX_BOUNCE_ANGLE = ( 60 * Math.PI ) / 180;
+
+function getBallSpeedForLevel( levelIndex ) {
+  return BASE_BALL_SPEED * ( BALL_SPEED_GROWTH ** levelIndex );
+}
+
+const BALL_SPEED = getBallSpeedForLevel( 0 );
 
 const ball = {
   x: canvas.width / 2 - BALL_SIZE / 2,
