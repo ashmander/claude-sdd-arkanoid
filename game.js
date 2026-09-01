@@ -27,6 +27,11 @@ let gameState = 'start';
 let lives = LIVES_START;
 let currentLevelIndex = 0;
 
+let heartImg = new Image();
+let heartImgLoaded = false;
+heartImg.onload = () => { heartImgLoaded = true; };
+heartImg.src = 'assets/count-lives.png';
+
 const bounceSound = new Audio( 'assets/sounds/ball-bounce.mp3' );
 const breakSound = new Audio( 'assets/sounds/break-sound.mp3' );
 
