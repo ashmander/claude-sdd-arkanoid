@@ -3,8 +3,6 @@ const ctx = canvas.getContext( '2d' );
 
 const BLOCK_W = 32;
 const BLOCK_H = 16;
-const BLOCK_ROWS = 7;
-const BLOCK_COLS = 15;
 const BLOCK_TOP = 60;
 const BLOCK_LEFT = 0;
 
@@ -27,6 +25,7 @@ const paddle = {
 
 let gameState = 'start';
 let lives = LIVES_START;
+let currentLevelIndex = 0;
 
 const bounceSound = new Audio( 'assets/sounds/ball-bounce.mp3' );
 const breakSound = new Audio( 'assets/sounds/break-sound.mp3' );
@@ -187,22 +186,6 @@ function checkBlockCollisions() {
   }
 }
 
-function createBlocks() {
-  const created = [];
-  for ( let row = 0; row < BLOCK_ROWS; row++ ) {
-    for ( let col = 0; col < BLOCK_COLS; col++ ) {
-      created.push( {
-        x: BLOCK_LEFT + col * BLOCK_W,
-        y: BLOCK_TOP + row * BLOCK_H,
-        w: BLOCK_W,
-        h: BLOCK_H,
-        color: BLOCK_COLOR_ORDER[ row % BLOCK_COLOR_ORDER.length ],
-      } );
-    }
-  }
-  return created;
-}
-
 const LEVEL_COLOR_CHARS = { R: 'red', Y: 'yellow', G: 'green', C: 'cyan', M: 'magenta', H: 'hotpink', A: 'gray' };
 
 function buildLevelFromPattern( pattern ) {
@@ -279,12 +262,16 @@ const LEVEL_PATTERNS = [
 
 const levels = LEVEL_PATTERNS.map( buildLevelFromPattern );
 
-let blocks = createBlocks();
+function getLevelBlocks( index ) {
+  return levels[ index ].map( ( block ) => ( { ...block } ) );
+}
+
+let blocks = getLevelBlocks( currentLevelIndex );
 
 function resetGame() {
   score = 0;
   lives = LIVES_START;
-  blocks = createBlocks();
+  blocks = getLevelBlocks( currentLevelIndex );
   explosions.length = 0;
   paddle.x = ( canvas.width - paddle.w ) / 2;
   resetBall();
@@ -333,6 +320,9 @@ function draw() {
   ctx.font = '16px sans-serif';
   ctx.fillText( `Score: ${ score }`, 10, 20 );
   ctx.fillText( `Lives: ${ lives }`, canvas.width - 90, 20 );
+  ctx.textAlign = 'center';
+  ctx.fillText( `Nivel ${ currentLevelIndex + 1 } / ${ levels.length }`, canvas.width / 2, 20 );
+  ctx.textAlign = 'left';
 
   if ( gameState === 'gameover' || gameState === 'victory' ) {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
