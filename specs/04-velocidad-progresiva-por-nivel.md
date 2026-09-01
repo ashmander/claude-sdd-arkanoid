@@ -1,6 +1,6 @@
 # 04 - Velocidad Progresiva por Nivel
 
-**Estado:** Approved
+**Estado:** Implemented
 **Depende de:** SPEC 01 (01-arkanoid-jugable), SPEC 02 (02-cinco-niveles)
 **Fecha:** 2026-09-01
 
@@ -40,14 +40,14 @@ No se introduce estructura de datos nueva. Se reemplaza la constante `BALL_SPEED
 
 ## Criterios de aceptación
 
-- [ ] La bola arranca el nivel 1 con velocidad base 6 (antes 5), en vez del valor anterior.
-- [ ] Al pasar del nivel 1 al nivel 2, la velocidad de la bola aumenta (magnitud del vector mayor tras el relanzamiento en el nuevo nivel).
-- [ ] La progresión de velocidad por nivel sigue 15% acumulativo: Nivel 1 = 6, Nivel 2 = 6.9, Nivel 3 = 7.935, Nivel 4 ≈ 9.1252, Nivel 5 ≈ 10.494.
-- [ ] Al perder una vida dentro de un nivel, la bola se relanza con la velocidad de ese mismo nivel, no con la velocidad base.
-- [ ] El ángulo variable de rebote en la paleta según punto de impacto sigue funcionando igual que antes, solo con la magnitud de velocidad correspondiente al nivel actual.
-- [ ] Los rebotes contra paredes y bloques siguen invirtiendo el signo de `vx`/`vy` sin alterar la magnitud vigente.
-- [ ] Al reiniciar partida (desde Game Over o Victoria), la velocidad vuelve a la base (6) del nivel 1.
-- [ ] No se agregó ningún archivo `package.json`, bundler ni dependencia externa; el juego sigue corriendo abriendo `index.html` directamente.
+- [X] La bola arranca el nivel 1 con velocidad base 6 (antes 5), en vez del valor anterior.
+- [X] Al pasar del nivel 1 al nivel 2, la velocidad de la bola aumenta (magnitud del vector mayor tras el relanzamiento en el nuevo nivel).
+- [X] La progresión de velocidad por nivel sigue 15% acumulativo: Nivel 1 = 6, Nivel 2 = 6.9, Nivel 3 = 7.935, Nivel 4 ≈ 9.1252, Nivel 5 ≈ 10.494.
+- [X] Al perder una vida dentro de un nivel, la bola se relanza con la velocidad de ese mismo nivel, no con la velocidad base.
+- [X] El ángulo variable de rebote en la paleta según punto de impacto sigue funcionando igual que antes, solo con la magnitud de velocidad correspondiente al nivel actual.
+- [X] Los rebotes contra paredes y bloques siguen invirtiendo el signo de `vx`/`vy` sin alterar la magnitud vigente.
+- [X] Al reiniciar partida (desde Game Over o Victoria), la velocidad vuelve a la base (6) del nivel 1.
+- [X] No se agregó ningún archivo `package.json`, bundler ni dependencia externa; el juego sigue corriendo abriendo `index.html` directamente.
 
 ## Decisiones tomadas y descartadas
 
