@@ -275,6 +275,7 @@ let blocks = getLevelBlocks( currentLevelIndex );
 function resetGame() {
   score = 0;
   lives = LIVES_START;
+  currentLevelIndex = 0;
   blocks = getLevelBlocks( currentLevelIndex );
   explosions.length = 0;
   paddle.x = ( canvas.width - paddle.w ) / 2;
