@@ -8,7 +8,7 @@ const BLOCK_LEFT = 0;
 
 const BLOCK_COLOR_ORDER = [ 'red', 'yellow', 'green', 'cyan', 'magenta', 'hotpink', 'gray' ];
 
-const PADDLE_W = 162;
+const PADDLE_W = 97;
 const PADDLE_H = 14;
 const PADDLE_Y = 600;
 
