@@ -1,6 +1,6 @@
 # 02 - Cinco Niveles
 
-**Estado:** Approved
+**Estado:** Implemented
 **Depende de:** SPEC 01 (01-arkanoid-jugable)
 **Fecha:** 2026-08-31
 
@@ -46,15 +46,15 @@ Extender el Arkanoid jugable para que tenga 5 niveles con layouts de bloques dis
 
 ## Criterios de aceptación
 
-- [ ] El juego arranca en el nivel 1 mostrando su layout de bloques correspondiente y el HUD muestra "Nivel 1 / 5".
-- [ ] Los 5 niveles tienen disposiciones de bloques visualmente distintas entre sí.
-- [ ] Al romper todos los bloques de un nivel que no es el 5, se muestra la pantalla "Nivel X completado"; al presionar la tecla de continuar se carga el siguiente nivel, la bola se relanza desde la paleta, y las vidas y el puntaje se mantienen sin resetear.
-- [ ] El HUD muestra el número de nivel actual actualizado correctamente en cada transición ("Nivel 2 / 5", "Nivel 3 / 5", etc.).
-- [ ] La velocidad base de la bola es la misma en todos los niveles.
-- [ ] Al romper todos los bloques del nivel 5, se muestra la pantalla de Victoria existente con el puntaje final acumulado.
-- [ ] Si se pierden las 3 vidas en cualquier nivel, se muestra Game Over; al reiniciar, la partida vuelve al nivel 1 con 3 vidas y 0 puntos.
-- [ ] Al reiniciar desde la pantalla de Victoria, la partida vuelve al nivel 1 con 3 vidas y 0 puntos.
-- [ ] No se agregó ningún archivo `package.json`, bundler ni dependencia externa; el juego sigue corriendo abriendo `index.html` directamente.
+- [X] El juego arranca en el nivel 1 mostrando su layout de bloques correspondiente y el HUD muestra "Nivel 1 / 5".
+- [X] Los 5 niveles tienen disposiciones de bloques visualmente distintas entre sí.
+- [X] Al romper todos los bloques de un nivel que no es el 5, se muestra la pantalla "Nivel X completado"; al presionar la tecla de continuar se carga el siguiente nivel, la bola se relanza desde la paleta, y las vidas y el puntaje se mantienen sin resetear.
+- [X] El HUD muestra el número de nivel actual actualizado correctamente en cada transición ("Nivel 2 / 5", "Nivel 3 / 5", etc.).
+- [X] La velocidad base de la bola es la misma en todos los niveles.
+- [X] Al romper todos los bloques del nivel 5, se muestra la pantalla de Victoria existente con el puntaje final acumulado.
+- [X] Si se pierden las 3 vidas en cualquier nivel, se muestra Game Over; al reiniciar, la partida vuelve al nivel 1 con 3 vidas y 0 puntos.
+- [X] Al reiniciar desde la pantalla de Victoria, la partida vuelve al nivel 1 con 3 vidas y 0 puntos.
+- [X] No se agregó ningún archivo `package.json`, bundler ni dependencia externa; el juego sigue corriendo abriendo `index.html` directamente.
 
 ## Decisiones tomadas y descartadas
 
