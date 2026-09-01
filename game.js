@@ -3,8 +3,6 @@ const ctx = canvas.getContext( '2d' );
 
 const BLOCK_W = 32;
 const BLOCK_H = 16;
-const BLOCK_ROWS = 7;
-const BLOCK_COLS = 15;
 const BLOCK_TOP = 60;
 const BLOCK_LEFT = 0;
 
@@ -27,6 +25,7 @@ const paddle = {
 
 let gameState = 'start';
 let lives = LIVES_START;
+let currentLevelIndex = 0;
 
 const bounceSound = new Audio( 'assets/sounds/ball-bounce.mp3' );
 const breakSound = new Audio( 'assets/sounds/break-sound.mp3' );
@@ -180,35 +179,104 @@ function checkBlockCollisions() {
     playSound( breakSound );
 
     if ( blocks.length === 0 ) {
-      gameState = 'victory';
+      if ( currentLevelIndex === levels.length - 1 ) {
+        gameState = 'victory';
+      } else {
+        gameState = 'levelComplete';
+      }
     }
 
     break;
   }
 }
 
-function createBlocks() {
+const LEVEL_COLOR_CHARS = { R: 'red', Y: 'yellow', G: 'green', C: 'cyan', M: 'magenta', H: 'hotpink', A: 'gray' };
+
+function buildLevelFromPattern( pattern ) {
   const created = [];
-  for ( let row = 0; row < BLOCK_ROWS; row++ ) {
-    for ( let col = 0; col < BLOCK_COLS; col++ ) {
+  for ( let row = 0; row < pattern.length; row++ ) {
+    const line = pattern[ row ];
+    for ( let col = 0; col < line.length; col++ ) {
+      const ch = line[ col ];
+      if ( ch === '.' ) continue;
       created.push( {
         x: BLOCK_LEFT + col * BLOCK_W,
         y: BLOCK_TOP + row * BLOCK_H,
         w: BLOCK_W,
         h: BLOCK_H,
-        color: BLOCK_COLOR_ORDER[ row % BLOCK_COLOR_ORDER.length ],
+        color: LEVEL_COLOR_CHARS[ ch ],
       } );
     }
   }
   return created;
 }
 
-let blocks = createBlocks();
+const LEVEL_PATTERNS = [
+  // Nivel 1: grid clasico, igual al layout unico del spec 01
+  [
+    'RRRRRRRRRRRRRRR',
+    'YYYYYYYYYYYYYYY',
+    'GGGGGGGGGGGGGGG',
+    'CCCCCCCCCCCCCCC',
+    'MMMMMMMMMMMMMMM',
+    'HHHHHHHHHHHHHHH',
+    'AAAAAAAAAAAAAAA',
+  ],
+  // Nivel 2: piramide
+  [
+    'RRRRRRRRRRRRRRR',
+    '.YYYYYYYYYYYYY.',
+    '..GGGGGGGGGGG..',
+    '...CCCCCCCCC...',
+    '....MMMMMMM....',
+    '.....HHHHH.....',
+    '......AAA......',
+  ],
+  // Nivel 3: tablero de ajedrez
+  [
+    'R.R.R.R.R.R.R.R',
+    '.Y.Y.Y.Y.Y.Y.Y.',
+    'G.G.G.G.G.G.G.G',
+    '.C.C.C.C.C.C.C.',
+    'M.M.M.M.M.M.M.M',
+    '.H.H.H.H.H.H.H.',
+    'A.A.A.A.A.A.A.A',
+  ],
+  // Nivel 4: diamante
+  [
+    '.......R.......',
+    '......YYY......',
+    '.....GGGGG.....',
+    '....CCCCCCC....',
+    '.....MMMMM.....',
+    '......HHH......',
+    '.......A.......',
+  ],
+  // Nivel 5: marco/caja
+  [
+    'RRRRRRRRRRRRRRR',
+    'Y.............Y',
+    'G.GGGGGGGGGGG.G',
+    'C.C.........C.C',
+    'M.MMMMMMMMMMM.M',
+    'H.............H',
+    'AAAAAAAAAAAAAAA',
+  ],
+];
+
+const levels = LEVEL_PATTERNS.map( buildLevelFromPattern );
+
+function getLevelBlocks( index ) {
+  return levels[ index ].map( ( block ) => ( { ...block } ) );
+}
+
+let blocks = getLevelBlocks( currentLevelIndex );
 
 function resetGame() {
   score = 0;
   lives = LIVES_START;
-  blocks = createBlocks();
+  currentLevelIndex = 0;
+  blocks = getLevelBlocks( currentLevelIndex );
   explosions.length = 0;
   paddle.x = ( canvas.width - paddle.w ) / 2;
   resetBall();
@@ -222,6 +290,15 @@ window.addEventListener( 'keydown', ( e ) => {
   }
 
   if ( gameState === 'start' && e.key === ' ' ) {
+    gameState = 'playing';
+    return;
+  }
+
+  if ( gameState === 'levelComplete' && e.key === ' ' ) {
+    currentLevelIndex += 1;
+    blocks = getLevelBlocks( currentLevelIndex );
+    explosions.length = 0;
+    resetBall();
     gameState = 'playing';
     return;
   }
@@ -257,6 +334,9 @@ function draw() {
   ctx.font = '16px sans-serif';
   ctx.fillText( `Score: ${ score }`, 10, 20 );
   ctx.fillText( `Lives: ${ lives }`, canvas.width - 90, 20 );
+  ctx.textAlign = 'center';
+  ctx.fillText( `Nivel ${ currentLevelIndex + 1 } / ${ levels.length }`, canvas.width / 2, 20 );
+  ctx.textAlign = 'left';
 
   if ( gameState === 'gameover' || gameState === 'victory' ) {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
@@ -273,6 +353,20 @@ function draw() {
 
     ctx.font = '16px sans-serif';
     ctx.fillText( 'Presiona R para reiniciar', canvas.width / 2, canvas.height / 2 + 30 );
+    ctx.textAlign = 'left';
+  }
+
+  if ( gameState === 'levelComplete' ) {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+    ctx.fillRect( 0, 0, canvas.width, canvas.height );
+
+    ctx.fillStyle = '#fff';
+    ctx.textAlign = 'center';
+    ctx.font = '32px sans-serif';
+    ctx.fillText( `Nivel ${ currentLevelIndex + 1 } completado`, canvas.width / 2, canvas.height / 2 );
+
+    ctx.font = '16px sans-serif';
+    ctx.fillText( 'Presiona ESPACIO para continuar', canvas.width / 2, canvas.height / 2 + 30 );
     ctx.textAlign = 'left';
   }
 
