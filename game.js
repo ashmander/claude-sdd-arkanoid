@@ -179,7 +179,11 @@ function checkBlockCollisions() {
     playSound( breakSound );
 
     if ( blocks.length === 0 ) {
-      gameState = 'victory';
+      if ( currentLevelIndex === levels.length - 1 ) {
+        gameState = 'victory';
+      } else {
+        gameState = 'levelComplete';
+      }
     }
 
     break;
@@ -289,6 +293,15 @@ window.addEventListener( 'keydown', ( e ) => {
     return;
   }
 
+  if ( gameState === 'levelComplete' && e.key === ' ' ) {
+    currentLevelIndex += 1;
+    blocks = getLevelBlocks( currentLevelIndex );
+    explosions.length = 0;
+    resetBall();
+    gameState = 'playing';
+    return;
+  }
+
   if ( e.key === 'p' || e.key === 'P' || e.key === ' ' ) {
     if ( gameState === 'playing' ) {
       gameState = 'paused';
@@ -339,6 +352,20 @@ function draw() {
 
     ctx.font = '16px sans-serif';
     ctx.fillText( 'Presiona R para reiniciar', canvas.width / 2, canvas.height / 2 + 30 );
+    ctx.textAlign = 'left';
+  }
+
+  if ( gameState === 'levelComplete' ) {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+    ctx.fillRect( 0, 0, canvas.width, canvas.height );
+
+    ctx.fillStyle = '#fff';
+    ctx.textAlign = 'center';
+    ctx.font = '32px sans-serif';
+    ctx.fillText( `Nivel ${ currentLevelIndex + 1 } completado`, canvas.width / 2, canvas.height / 2 );
+
+    ctx.font = '16px sans-serif';
+    ctx.fillText( 'Presiona ESPACIO para continuar', canvas.width / 2, canvas.height / 2 + 30 );
     ctx.textAlign = 'left';
   }
 
