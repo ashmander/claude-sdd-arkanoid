@@ -203,6 +203,82 @@ function createBlocks() {
   return created;
 }
 
+const LEVEL_COLOR_CHARS = { R: 'red', Y: 'yellow', G: 'green', C: 'cyan', M: 'magenta', H: 'hotpink', A: 'gray' };
+
+function buildLevelFromPattern( pattern ) {
+  const created = [];
+  for ( let row = 0; row < pattern.length; row++ ) {
+    const line = pattern[ row ];
+    for ( let col = 0; col < line.length; col++ ) {
+      const ch = line[ col ];
+      if ( ch === '.' ) continue;
+      created.push( {
+        x: BLOCK_LEFT + col * BLOCK_W,
+        y: BLOCK_TOP + row * BLOCK_H,
+        w: BLOCK_W,
+        h: BLOCK_H,
+        color: LEVEL_COLOR_CHARS[ ch ],
+      } );
+    }
+  }
+  return created;
+}
+
+const LEVEL_PATTERNS = [
+  // Nivel 1: grid clasico, igual al layout unico del spec 01
+  [
+    'RRRRRRRRRRRRRRR',
+    'YYYYYYYYYYYYYYY',
+    'GGGGGGGGGGGGGGG',
+    'CCCCCCCCCCCCCCC',
+    'MMMMMMMMMMMMMMM',
+    'HHHHHHHHHHHHHHH',
+    'AAAAAAAAAAAAAAA',
+  ],
+  // Nivel 2: piramide
+  [
+    'RRRRRRRRRRRRRRR',
+    '.YYYYYYYYYYYYY.',
+    '..GGGGGGGGGGG..',
+    '...CCCCCCCCC...',
+    '....MMMMMMM....',
+    '.....HHHHH.....',
+    '......AAA......',
+  ],
+  // Nivel 3: tablero de ajedrez
+  [
+    'R.R.R.R.R.R.R.R',
+    '.Y.Y.Y.Y.Y.Y.Y.',
+    'G.G.G.G.G.G.G.G',
+    '.C.C.C.C.C.C.C.',
+    'M.M.M.M.M.M.M.M',
+    '.H.H.H.H.H.H.H.',
+    'A.A.A.A.A.A.A.A',
+  ],
+  // Nivel 4: diamante
+  [
+    '.......R.......',
+    '......YYY......',
+    '.....GGGGG.....',
+    '....CCCCCCC....',
+    '.....MMMMM.....',
+    '......HHH......',
+    '.......A.......',
+  ],
+  // Nivel 5: marco/caja
+  [
+    'RRRRRRRRRRRRRRR',
+    'Y.............Y',
+    'G.GGGGGGGGGGG.G',
+    'C.C.........C.C',
+    'M.MMMMMMMMMMM.M',
+    'H.............H',
+    'AAAAAAAAAAAAAAA',
+  ],
+];
+
+const levels = LEVEL_PATTERNS.map( buildLevelFromPattern );
+
 let blocks = createBlocks();
 
 function resetGame() {
