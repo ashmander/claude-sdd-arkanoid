@@ -48,8 +48,6 @@ function getBallSpeedForLevel( levelIndex ) {
   return BASE_BALL_SPEED * ( BALL_SPEED_GROWTH ** levelIndex );
 }
 
-const BALL_SPEED = getBallSpeedForLevel( 0 );
-
 const ball = {
   x: canvas.width / 2 - BALL_SIZE / 2,
   y: paddle.y - BALL_SIZE,
@@ -126,8 +124,9 @@ function updateBall() {
     const angle = clampedHitPos * BALL_MAX_BOUNCE_ANGLE;
 
     ball.y = paddle.y - ball.h;
-    ball.vx = BALL_SPEED * Math.sin( angle );
-    ball.vy = -BALL_SPEED * Math.cos( angle );
+    const speed = getBallSpeedForLevel( currentLevelIndex );
+    ball.vx = speed * Math.sin( angle );
+    ball.vy = -speed * Math.cos( angle );
     playSound( bounceSound );
   }
 
