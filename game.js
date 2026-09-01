@@ -55,15 +55,15 @@ const ball = {
   y: paddle.y - BALL_SIZE,
   w: BALL_SIZE,
   h: BALL_SIZE,
-  vx: BALL_SPEED * Math.sin( 0.4 ),
-  vy: -BALL_SPEED * Math.cos( 0.4 ),
+  vx: getBallSpeedForLevel( currentLevelIndex ) * Math.sin( 0.4 ),
+  vy: -getBallSpeedForLevel( currentLevelIndex ) * Math.cos( 0.4 ),
 };
 
 function resetBall() {
   ball.x = paddle.x + paddle.w / 2 - ball.w / 2;
   ball.y = paddle.y - ball.h;
-  ball.vx = BALL_SPEED * Math.sin( 0.4 );
-  ball.vy = -BALL_SPEED * Math.cos( 0.4 );
+  ball.vx = getBallSpeedForLevel( currentLevelIndex ) * Math.sin( 0.4 );
+  ball.vy = -getBallSpeedForLevel( currentLevelIndex ) * Math.cos( 0.4 );
 }
 
 const PADDLE_SPEED = 6;
