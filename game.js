@@ -338,7 +338,14 @@ function draw() {
   ctx.fillStyle = '#fff';
   ctx.font = '16px sans-serif';
   ctx.fillText( `Score: ${ score }`, 10, 20 );
-  ctx.fillText( `Lives: ${ lives }`, canvas.width - 90, 20 );
+  if ( heartImgLoaded ) {
+    const heartSize = 18;
+    const heartGap = 4;
+    for ( let i = 0; i < lives; i++ ) {
+      const heartX = canvas.width - 10 - ( heartSize + heartGap ) * ( i + 1 );
+      ctx.drawImage( heartImg, heartX, 4, heartSize, heartSize );
+    }
+  }
   ctx.textAlign = 'center';
   ctx.fillText( `Nivel ${ currentLevelIndex + 1 } / ${ levels.length }`, canvas.width / 2, 20 );
   ctx.textAlign = 'left';
