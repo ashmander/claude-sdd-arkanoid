@@ -1,6 +1,6 @@
 # 01 - Arkanoid Jugable
 
-**Estado:** Approved
+**Estado:** Implemented
 **Depende de:** Ninguno
 **Fecha:** 2026-08-30
 
@@ -57,18 +57,18 @@ No se introduce persistencia ni estructuras complejas. El estado del juego vive 
 
 ## Criterios de aceptación
 
-- [ ] Abrir `index.html` directamente en el navegador (o servido estáticamente) muestra el canvas de 480x640 con la pantalla de inicio.
-- [ ] Presionar la tecla de inicio lanza la bola y comienza el juego.
-- [ ] Las flechas izquierda/derecha y las teclas A/D mueven la paleta dentro de los límites del canvas, sin salirse.
-- [ ] La bola rebota correctamente contra las paredes izquierda, derecha y superior.
-- [ ] La bola rebota contra la paleta con ángulo distinto según si golpea el centro o los bordes de la paleta.
-- [ ] Golpear un bloque lo elimina, dispara su animación de explosión del color correspondiente, reproduce `break-sound.mp3`, y suma puntos al marcador visible en pantalla.
-- [ ] Cada rebote contra pared o paleta reproduce `ball-bounce.mp3`.
-- [ ] Si la bola cae debajo de la paleta, se resta una vida y la bola se relanza desde la paleta, siempre que queden vidas.
-- [ ] Al llegar a 0 vidas se muestra la pantalla de Game Over con opción de reiniciar, y reiniciar devuelve el juego al estado inicial (3 vidas, 0 puntos, todos los bloques).
-- [ ] Al romper todos los bloques se muestra la pantalla de Victoria con opción de reiniciar.
-- [ ] Presionar P o Espacio durante el juego pausa el movimiento de la bola y la paleta; presionarla de nuevo reanuda.
-- [ ] No se agregó ningún archivo `package.json`, bundler ni dependencia externa; el juego corre abriendo `index.html` directamente.
+- [X] Abrir `index.html` directamente en el navegador (o servido estáticamente) muestra el canvas de 480x640 con la pantalla de inicio.
+- [X] Presionar la tecla de inicio lanza la bola y comienza el juego.
+- [X] Las flechas izquierda/derecha y las teclas A/D mueven la paleta dentro de los límites del canvas, sin salirse.
+- [X] La bola rebota correctamente contra las paredes izquierda, derecha y superior.
+- [X] La bola rebota contra la paleta con ángulo distinto según si golpea el centro o los bordes de la paleta.
+- [X] Golpear un bloque lo elimina, dispara su animación de explosión del color correspondiente, reproduce `break-sound.mp3`, y suma puntos al marcador visible en pantalla.
+- [X] Cada rebote contra pared o paleta reproduce `ball-bounce.mp3`.
+- [X] Si la bola cae debajo de la paleta, se resta una vida y la bola se relanza desde la paleta, siempre que queden vidas.
+- [X] Al llegar a 0 vidas se muestra la pantalla de Game Over con opción de reiniciar, y reiniciar devuelve el juego al estado inicial (3 vidas, 0 puntos, todos los bloques).
+- [X] Al romper todos los bloques se muestra la pantalla de Victoria con opción de reiniciar.
+- [X] Presionar P o Espacio durante el juego pausa el movimiento de la bola y la paleta; presionarla de nuevo reanuda.
+- [X] No se agregó ningún archivo `package.json`, bundler ni dependencia externa; el juego corre abriendo `index.html` directamente.
 
 ## Decisiones tomadas y descartadas
 
