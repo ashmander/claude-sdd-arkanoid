@@ -1,6 +1,6 @@
 # 03 - Paleta Corta y Vidas con Corazón
 
-**Estado:** Approved
+**Estado:** Implemented
 **Depende de:** SPEC 01 (01-arkanoid-jugable), SPEC 02 (02-cinco-niveles)
 **Fecha:** 2026-09-01
 
@@ -38,13 +38,13 @@ No se introduce estado nuevo. Se reutiliza `lives` (ya existente en `game.js`) p
 
 ## Criterios de aceptación
 
-- [ ] La paleta mide 97px de ancho (antes 162px) y se controla igual con flechas/A-D dentro de los límites del canvas.
-- [ ] El rebote de la bola contra la paleta sigue teniendo ángulo variable según el punto de impacto, sin cambios de comportamiento más allá del ancho.
-- [ ] El HUD ya no muestra el texto "Lives: N"; en su lugar muestra tantos íconos de corazón (`assets/count-lives.png`) como vidas restantes.
-- [ ] Al perder una vida, desaparece un corazón del HUD inmediatamente.
-- [ ] Al reiniciar partida (desde Game Over o desde Victoria), vuelven a mostrarse 3 corazones.
-- [ ] El HUD sigue mostrando correctamente "Score" y "Nivel X / 5" sin cambios de posición ni comportamiento.
-- [ ] No se agregó ningún archivo `package.json`, bundler ni dependencia externa; el juego sigue corriendo abriendo `index.html` directamente.
+- [X] La paleta mide 97px de ancho (antes 162px) y se controla igual con flechas/A-D dentro de los límites del canvas.
+- [X] El rebote de la bola contra la paleta sigue teniendo ángulo variable según el punto de impacto, sin cambios de comportamiento más allá del ancho.
+- [X] El HUD ya no muestra el texto "Lives: N"; en su lugar muestra tantos íconos de corazón (`assets/count-lives.png`) como vidas restantes.
+- [X] Al perder una vida, desaparece un corazón del HUD inmediatamente.
+- [X] Al reiniciar partida (desde Game Over o desde Victoria), vuelven a mostrarse 3 corazones.
+- [X] El HUD sigue mostrando correctamente "Score" y "Nivel X / 5" sin cambios de posición ni comportamiento.
+- [X] No se agregó ningún archivo `package.json`, bundler ni dependencia externa; el juego sigue corriendo abriendo `index.html` directamente.
 
 ## Decisiones tomadas y descartadas
 
