@@ -1,6 +1,6 @@
 # 03 - Paleta Corta y Vidas con Corazón
 
-**Estado:** Draft
+**Estado:** Approved
 **Depende de:** SPEC 01 (01-arkanoid-jugable), SPEC 02 (02-cinco-niveles)
 **Fecha:** 2026-09-01
 
