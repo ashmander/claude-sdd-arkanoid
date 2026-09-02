@@ -27,6 +27,52 @@ let gameState = 'start';
 let lives = LIVES_START;
 let currentLevelIndex = 0;
 
+const MIN_SELECTED_LEVEL = 1;
+const MAX_SELECTED_LEVEL = 5;
+const MIN_SELECTED_SPEED = 1;
+const MAX_SELECTED_SPEED = 10;
+
+let selectedLevel = 1;
+let selectedBaseSpeed = 6;
+
+const levelValueEl = document.getElementById( 'level-value' );
+const speedValueEl = document.getElementById( 'speed-value' );
+const selectorsEl = document.getElementById( 'selectors' );
+const selectorButtons = [
+  document.getElementById( 'level-minus' ),
+  document.getElementById( 'level-plus' ),
+  document.getElementById( 'speed-minus' ),
+  document.getElementById( 'speed-plus' ),
+];
+
+selectorButtons[ 0 ].addEventListener( 'click', () => {
+  selectedLevel = Math.max( MIN_SELECTED_LEVEL, selectedLevel - 1 );
+  levelValueEl.textContent = selectedLevel;
+} );
+
+selectorButtons[ 1 ].addEventListener( 'click', () => {
+  selectedLevel = Math.min( MAX_SELECTED_LEVEL, selectedLevel + 1 );
+  levelValueEl.textContent = selectedLevel;
+} );
+
+selectorButtons[ 2 ].addEventListener( 'click', () => {
+  selectedBaseSpeed = Math.max( MIN_SELECTED_SPEED, selectedBaseSpeed - 1 );
+  speedValueEl.textContent = selectedBaseSpeed;
+} );
+
+selectorButtons[ 3 ].addEventListener( 'click', () => {
+  selectedBaseSpeed = Math.min( MAX_SELECTED_SPEED, selectedBaseSpeed + 1 );
+  speedValueEl.textContent = selectedBaseSpeed;
+} );
+
+function updateSelectorsVisibility() {
+  const isStart = gameState === 'start';
+  selectorsEl.style.display = isStart ? 'flex' : 'none';
+  for ( const button of selectorButtons ) {
+    button.disabled = !isStart;
+  }
+}
+
 let heartImg = new Image();
 let heartImgLoaded = false;
 heartImg.onload = () => { heartImgLoaded = true; };
@@ -40,12 +86,11 @@ function playSound( sound ) {
   sound.play();
 }
 
-const BASE_BALL_SPEED = 6;
 const BALL_SPEED_GROWTH = 1.15;
 const BALL_MAX_BOUNCE_ANGLE = ( 60 * Math.PI ) / 180;
 
 function getBallSpeedForLevel( levelIndex ) {
-  return BASE_BALL_SPEED * ( BALL_SPEED_GROWTH ** levelIndex );
+  return selectedBaseSpeed * ( BALL_SPEED_GROWTH ** levelIndex );
 }
 
 const ball = {
@@ -286,11 +331,8 @@ let blocks = getLevelBlocks( currentLevelIndex );
 function resetGame() {
   score = 0;
   lives = LIVES_START;
-  currentLevelIndex = 0;
-  blocks = getLevelBlocks( currentLevelIndex );
   explosions.length = 0;
   paddle.x = ( canvas.width - paddle.w ) / 2;
-  resetBall();
   gameState = 'start';
 }
 
@@ -301,6 +343,9 @@ window.addEventListener( 'keydown', ( e ) => {
   }
 
   if ( gameState === 'start' && e.key === ' ' ) {
+    currentLevelIndex = selectedLevel - 1;
+    blocks = getLevelBlocks( currentLevelIndex );
+    resetBall();
     gameState = 'playing';
     return;
   }
@@ -424,6 +469,7 @@ function loop() {
     checkBlockCollisions();
   }
   updateExplosions();
+  updateSelectorsVisibility();
   draw();
   requestAnimationFrame( loop );
 }

@@ -1,6 +1,6 @@
 # 05 - Selector de Nivel y Velocidad Base
 
-**Estado:** Approved
+**Estado:** Implemented
 **Depende de:** SPEC 01 (01-arkanoid-jugable), SPEC 02 (02-cinco-niveles), SPEC 04 (04-velocidad-progresiva-por-nivel)
 **Fecha:** 2026-09-01
 
@@ -53,17 +53,17 @@ En `index.html` se agregan elementos HTML (fuera del `<canvas>`) para los dos se
 
 ## Criterios de aceptación
 
-- [ ] La pantalla de inicio muestra dos selectores con botones `-`/`+`: "Nivel" (default 1) y "Velocidad inicial" (default 6).
-- [ ] El botón `+` de nivel no supera 5; el botón `-` no baja de 1.
-- [ ] El botón `+` de velocidad no supera 10; el botón `-` no baja de 1.
-- [ ] Con los valores por defecto (Nivel 1, Velocidad 6) y presionando ESPACIO, el juego se comporta exactamente igual que antes de este spec (mismo layout de nivel 1, misma velocidad inicial 6).
-- [ ] Seleccionando Nivel 5 y presionando ESPACIO, la partida arranca directamente en el layout del nivel 5, con vidas en 3 y puntaje en 0.
-- [ ] Seleccionando Velocidad inicial 8, la velocidad de la bola al arrancar el nivel 1 corresponde a `8 * 1.15^0 = 8`, y si se avanza al nivel 2, a `8 * 1.15^1 = 9.2`.
-- [ ] Si se arranca en Nivel 4 y se completa ese nivel, la partida avanza al Nivel 5 (no salta a otro valor), manteniendo la lógica secuencial existente.
-- [ ] Si se arranca en Nivel 5 y se completa, se muestra la pantalla de Victoria (igual que si se hubiera llegado ahí jugando desde el nivel 1).
-- [ ] Los botones de los selectores no están visibles/activos mientras `gameState` es `playing`, `paused`, `levelComplete`, `gameover` o `victory`.
-- [ ] Al perder o ganar la partida y reiniciar con R, la pantalla de inicio vuelve a mostrar la última combinación de nivel/velocidad elegida (no el default), permitiendo cambiarla antes de presionar ESPACIO de nuevo.
-- [ ] No se agregó ningún archivo `package.json`, bundler ni dependencia externa; el juego sigue corriendo abriendo `index.html` directamente.
+- [X] La pantalla de inicio muestra dos selectores con botones `-`/`+`: "Nivel" (default 1) y "Velocidad inicial" (default 6).
+- [X] El botón `+` de nivel no supera 5; el botón `-` no baja de 1.
+- [X] El botón `+` de velocidad no supera 10; el botón `-` no baja de 1.
+- [X] Con los valores por defecto (Nivel 1, Velocidad 6) y presionando ESPACIO, el juego se comporta exactamente igual que antes de este spec (mismo layout de nivel 1, misma velocidad inicial 6).
+- [X] Seleccionando Nivel 5 y presionando ESPACIO, la partida arranca directamente en el layout del nivel 5, con vidas en 3 y puntaje en 0.
+- [X] Seleccionando Velocidad inicial 8, la velocidad de la bola al arrancar el nivel 1 corresponde a `8 * 1.15^0 = 8`, y si se avanza al nivel 2, a `8 * 1.15^1 = 9.2`.
+- [X] Si se arranca en Nivel 4 y se completa ese nivel, la partida avanza al Nivel 5 (no salta a otro valor), manteniendo la lógica secuencial existente.
+- [X] Si se arranca en Nivel 5 y se completa, se muestra la pantalla de Victoria (igual que si se hubiera llegado ahí jugando desde el nivel 1).
+- [X] Los botones de los selectores no están visibles/activos mientras `gameState` es `playing`, `paused`, `levelComplete`, `gameover` o `victory`.
+- [X] Al perder o ganar la partida y reiniciar con R, la pantalla de inicio vuelve a mostrar la última combinación de nivel/velocidad elegida (no el default), permitiendo cambiarla antes de presionar ESPACIO de nuevo.
+- [X] No se agregó ningún archivo `package.json`, bundler ni dependencia externa; el juego sigue corriendo abriendo `index.html` directamente.
 
 ## Decisiones tomadas y descartadas
 
